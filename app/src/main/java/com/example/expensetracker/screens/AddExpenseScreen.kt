@@ -16,6 +16,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DropdownMenuItem
@@ -217,7 +218,7 @@ fun DataForm(modifier: Modifier, onAddExpenseClick: (model: ExpenseEntity) -> Un
         Spacer(modifier = Modifier.size(4.dp))
         ExpenseDropDown(
             listOf("Income", "Expense"),
-            onItemSelected = { type.value = it }
+            onItemSelected = { type.value = it },
         )
         Spacer(modifier = Modifier.size(16.dp))
 
@@ -233,6 +234,7 @@ fun DataForm(modifier: Modifier, onAddExpenseClick: (model: ExpenseEntity) -> Un
                 )
                 onAddExpenseClick(model)
             },
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF40938D)),
             modifier = Modifier
                 .clip(RoundedCornerShape(2.dp))
                 .fillMaxWidth()
@@ -297,7 +299,7 @@ fun ExpenseDropDown(
 
     ExposedDropdownMenuBox(
         expanded = expanded.value,
-        onExpandedChange = { expanded.value = it }
+        onExpandedChange = { expanded.value = it },
     ) {
         TextField(
             value = selectedItem.value,
@@ -312,7 +314,7 @@ fun ExpenseDropDown(
         )
         ExposedDropdownMenu(
             expanded = expanded.value,
-            onDismissRequest = { }
+            onDismissRequest = { },
         ) {
             listOfItems.forEach {
                 DropdownMenuItem(

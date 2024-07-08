@@ -14,15 +14,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -39,9 +40,21 @@ import com.example.expensetracker.R
 import com.example.expensetracker.data.model.ExpenseEntity
 import com.example.expensetracker.viewmodel.HomeViewModel
 import com.example.expensetracker.viewmodel.HomeViewModelFactory
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun HomeScreen(navController: NavHostController) {
+    val systemUiController = rememberSystemUiController()
+    val useDarkIcons = false
+    val color = Color(0xFF40938D)
+
+    LaunchedEffect(Unit) {
+        systemUiController.setSystemBarsColor(
+            color = color,
+            darkIcons = useDarkIcons
+        )
+    }
+
     val viewModel: HomeViewModel =
         HomeViewModelFactory(LocalContext.current).create(HomeViewModel::class.java)
 
@@ -122,20 +135,33 @@ fun HomeScreen(navController: NavHostController) {
                 list = state.value,
                 viewModel
             )
-            Image(
-                painter = painterResource(id = R.drawable.ic_add),
-                contentDescription = null,
+            Box(
                 modifier = Modifier
+                    .padding(16.dp)
                     .constrainAs(add) {
                         bottom.linkTo(parent.bottom)
                         end.linkTo(parent.end)
                     }
-                    .size(48.dp)
-                    .clip(CircleShape)
+                    .size(56.dp)
+                    .shadow(
+                        elevation = 24.dp,
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(color = Color(0xFF40938D))
                     .clickable {
                         navController.navigate("ADD_EXPENSE")
                     }
-            )
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_add),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(36.dp)
+                        .align(Alignment.Center)
+                )
+            }
+
         }
     }
 }
